@@ -47,7 +47,14 @@ void setup() {
 
   makeCache();
   showConfig();
-  
+
+  //
+  API_AUTH = API_URL + "/auth";
+  API_SEND_DATA = API_URL + "/device/" + device_id;
+  //
+
+  requestAccess();
+
   ticker.detach();
   digitalWrite(LED, LOW);
 
@@ -62,6 +69,7 @@ void setup() {
 void loop() {
   delay(2000);
   sendData();
+  yield();
 }
 ```
 
