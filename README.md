@@ -35,7 +35,7 @@ Firmware dividido em arquivos. Cada arquivo com sua responsabilidade. Tudo isso 
 
 ## Código principal
 
-```arduino
+```c
 void setup() {
   pinMode(LED, OUTPUT);
   ticker.attach(0.3, tick);
