@@ -8,6 +8,8 @@
 
 #include <WiFiManager.h>
 
+#include "user_config_override.h"
+
 /************************* Variaveis globais **********************/
 
 #define DEBUG true
@@ -15,7 +17,6 @@
 
 #define LED 2
 
-String API_URL = "http://127.0.0.1:5000/api";
 String API_AUTH = "";
 String API_SEND_DATA = "";
 
