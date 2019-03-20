@@ -15,7 +15,7 @@ Firmware para ESP32 com suporte a integração com WebService e configuração v
 
 Firmware dividido em arquivos. Cada arquivo com sua responsabilidade. Tudo isso visando melhor organização e facilidade em manter o código a longo prazo.
 
-![img](https://raw.githubusercontent.com/douglaszuqueto/esp32-http-firmware/master/.github/architecture.png)
+![img](https://raw.githubusercontent.com/douglaszuqueto/esp32-http-firmware/master/.github/architecture-2.png)
 
 ## Diagrama de fluxo
 
