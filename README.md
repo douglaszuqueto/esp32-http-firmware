@@ -2,6 +2,13 @@
 
 Firmware para ESP32 com suporte a integração com WebService e configuração via WiFiManager
 
+## Posts relacionados
+
+Se você chegou até aqui e esta boiando sobre o que originou este projeto, recomendo ver os posts que fiz no [Grupo Arduino Brasil](https://www.facebook.com/groups/arduino.br) no Facebook!
+
+* [1º post](https://www.facebook.com/groups/arduino.br/permalink/2228450170527406/)
+* [2º post](https://www.facebook.com/groups/arduino.br/permalink/2231466933559063/)
+
 ## Bibliotecas
 
 * [WiFi](https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi)
