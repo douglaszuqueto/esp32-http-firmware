@@ -65,6 +65,17 @@ void loop() {
 }
 ```
 
+## WifiManager
+
+Página de configuração via wifi manager
+
+![img](https://raw.githubusercontent.com/douglaszuqueto/esp32-http-firmware/master/.github/wifimanager.png)
+
+## Monitor serial
+Um pouco do fluxo que ocorre após o salvamento das configurações no wifi manager
+
+![img](https://raw.githubusercontent.com/douglaszuqueto/esp32-http-firmware/master/.github/serial-monitor.png)
+
 ## Referências
 
 * [Espressif - Arduino ESP32](https://github.com/espressif/arduino-esp32)
