@@ -26,7 +26,8 @@ void setJWTToken(String str) {
 
   strcpy(token, str.c_str());
 
-  DEBUG_PRINTLN("[HTTP] Token: " + String(token));
+  DEBUG_PRINTC(F("[HTTP] Token: "));
+  DEBUG_PRINTLN(token);
 }
 
 /************************* SET **********************/
@@ -68,9 +69,16 @@ void makeCache() {
 }
 
 void showConfig() {
-  DEBUG_PRINTLN("[CONFIG] API: " + API_URL);
-  DEBUG_PRINTLN("[CONFIG] DeviceID: " + String(device_id));
-  DEBUG_PRINTLN("[CONFIG] DeviceToken: " + String(device_token));
-  DEBUG_PRINTLN("[CONFIG] ClientID: " + String(client_id));
+  DEBUG_PRINTC(F("[CONFIG] API: "));
+  DEBUG_PRINTLN(API_URL);
+
+  DEBUG_PRINTC(F("[CONFIG] DeviceID: "));
+  DEBUG_PRINTLN(device_id);
+
+  DEBUG_PRINTC(F("[CONFIG] DeviceToken: "));
+  DEBUG_PRINTLN(device_token);
+
+  DEBUG_PRINTC(F("[CONFIG] ClientID: "));
+  DEBUG_PRINTLN(client_id);
 }
 

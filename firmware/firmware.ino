@@ -1,4 +1,6 @@
 /************************** Inclusão das Bibliotecas **************************/
+#include <Arduino.h>
+#include "user_config_override.h"
 
 #include <WiFi.h>
 #include <WebServer.h>
@@ -8,12 +10,13 @@
 
 #include <WiFiManager.h>
 
-#include "user_config_override.h"
+#if ESP_DASH
+#include <AsyncTCP.h>
+#include <ESPAsyncWebServer.h>
+#include <ESPDash.h>
+#endif
 
 /************************* Variaveis globais **********************/
-
-#define DEBUG true
-#define DEEP_SLEEP false
 
 #define LED 2
 
@@ -30,6 +33,10 @@ bool shouldSaveConfig = false;
 
 uint32_t sleep_time = 60 * 1000000; // intervalo de 1 minuto
 
+int x_axis_size = 7;
+String x_axis[7] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+int y_axis_size = 7;
+int y_axis[7] = {2, 5, 10, 12, 18, 8, 5};
 
 /**************************** DEBUG *******************************/
 
@@ -37,10 +44,14 @@ uint32_t sleep_time = 60 * 1000000; // intervalo de 1 minuto
 #define DEBUG_PRINTLN(m) Serial.println(m)
 #define DEBUG_PRINT(m) Serial.print(m)
 
+#define DEBUG_PRINTLNC(m) Serial.println("[Core " + String(xPortGetCoreID()) + "]" + m)
+#define DEBUG_PRINTC(m) Serial.print("[Core " + String(xPortGetCoreID()) + "]" + m)
+
 #else
 #define DEBUG_PRINTLN(m)
 #define DEBUG_PRINT(m)
-
+#define DEBUG_PRINTLNC(m)
+#define DEBUG_PRINTC(m)
 #endif
 
 /************************* Instanciação dos objetos  **************************/
@@ -50,6 +61,10 @@ WiFiClient client;
 HTTPClient http;
 Preferences preferences;
 
+#if ESP_DASH
+AsyncWebServer server(80);
+#endif
+
 /************************* Declaração dos Prototypes **************************/
 
 void initSerial();
@@ -58,6 +73,11 @@ void setupWifiManager();
 void requestAccess();
 bool sendData();
 void handleError(int httpCode , String message);
+
+void buttonClicked(const char* id) {
+  DEBUG_PRINTLNC("Button Clicked - " + String(id));
+  digitalWrite(LED, !digitalRead(LED));
+}
 
 /********************************** Sketch ************************************/
 
@@ -69,6 +89,7 @@ void setup() {
   openStorage();
 
   setupWifiManager();
+  setupWiFi();
 
   makeCache();
   showConfig();
@@ -83,17 +104,21 @@ void setup() {
   ticker.detach();
   digitalWrite(LED, LOW);
 
+#if ESP_DASH
+  initEspDash();
+#endif
+
 #if DEEP_SLEEP
   sendData();
   closeStorage();
-  DEBUG_PRINTLN("[ESP] Sleeping...");
+  DEBUG_PRINTLNC(F("[ESP] Sleeping..."));
   ESP.deepSleep(sleep_time);
 #endif
+
+  delay(1000);
+  initTasks();
 }
 
 void loop() {
-  delay(2000);
-  sendData();
-  yield();
 }
 

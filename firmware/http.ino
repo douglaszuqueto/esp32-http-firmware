@@ -1,10 +1,12 @@
 
 void handleError(int httpCode , String message ) {
-  DEBUG_PRINT("[HTTP] Code: " + String(httpCode));
-  DEBUG_PRINTLN(" | Message: " + message);
+  DEBUG_PRINTC(F("[HTTP] Code: "));
+  DEBUG_PRINT(httpCode);
+  DEBUG_PRINT(F(" | Message: "));
+  DEBUG_PRINTLN(message);
 
   if (message == "token_expired") {
-    DEBUG_PRINTLN("[HTTP] requesting new token");
+    DEBUG_PRINTLNC(F("[HTTP] requesting new token"));
     requestAccess();
   }
 }
@@ -13,10 +15,8 @@ void requestAccess() {
   String p;
 
   p += "{";
-  p += "\"id\":";
-  p += "\"37e73144-af71-4fde-93ab-98d1d6a6f83f\"";
-  p += ",\"password\":";
-  p += "\"f7a7329f391bc2a6d3141fb2b867cbdb637fed874aea8ae9c658418817a67ea4\"";
+  p += "\"id\":\"" + String(device_id) + "\"";
+  p += ",\"password\":\"" + String(device_token) + "\"";
   p += "}";
 
   http.begin(API_AUTH);
@@ -38,25 +38,17 @@ void requestAccess() {
 
 bool sendData() {
   ticker.attach(0.1, tick);
-  
+
   String p;
   p += "{";
-  p += "\"snr_1\":";
-  p += "\"0\"";
-  p += ",\"snr_2\":";
-  p += "\"0\"";
-  p += ",\"snr_3\":";
-  p += "\"0\"";
-  p += ",\"snr_4\":";
-  p += "\"0\"";
-  p += ",\"snr_5\":";
-  p += "\"0\"";
-  p += ",\"snr_6\":";
-  p += "\"0\"";
-  p += ",\"snr_7\":";
-  p += "\"0\"";
-  p += ",\"snr_8\":";
-  p += "\"0\"";
+  p += "\"snr_1\":\"" + String(1) + "\"";
+  p += ",\"snr_2\":\"" + String(2) + "\"";
+  p += ",\"snr_3\":\"" + String(3) + "\"";
+  p += ",\"snr_4\":\"" + String(4) + "\"";
+  p += ",\"snr_5\":\"" + String(5) + "\"";
+  p += ",\"snr_6\":\"" + String(6) + "\"";
+  p += ",\"snr_7\":\"" + String(7) + "\"";
+  p += ",\"snr_8\":\"" + String(8) + "\"";
   p += "}";
 
   http.begin(API_SEND_DATA);
@@ -77,7 +69,9 @@ bool sendData() {
     return false;
   }
 
-  DEBUG_PRINTLN("[HTTP] " + response);
+  DEBUG_PRINTC(F("[HTTP] "));
+  DEBUG_PRINTLN(response);
+
   return true;
 }
 
