@@ -110,7 +110,7 @@ Página de configuração via wifi manager
 ## ESP-DASH
 Como brincadeira adicional acabei conhecendo o projeto [ESP-DASH](https://github.com/ayushsharma82/ESP-DASH) em um grupo, dei uma olhada e gostei bastante das funcionalidades e da arquitetura que foi aplicada no projeto.
 
-Ainda não tem nenhuma integração, mas o mesmo possui uma tarefa na qual atualizada os dados de X em X tempo. Também possui um botão no qual possui interação com o led.
+Ainda não tem nenhuma integração real, mas o mesmo possui uma tarefa no qual os dados são atualizados de X em X tempo. Também possui um botão no qual possui integração com o led.
 
 É um projeto muito bacana, pois foi embarcado um WebAPP desenvolvido em VueJS e o build('compilação') desse webapp é embarcado dentro do esp através do SPIFFS - uma técnica deveras interessante que pode agregar muito nos projetos!
 
