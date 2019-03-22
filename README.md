@@ -136,3 +136,4 @@ No monitor serial houve uma melhoria que agora possibilita ver em qual core as t
 * [Espressif - Arduino ESP32](https://github.com/espressif/arduino-esp32)
 * [WiFi Manager](https://github.com/tzapu/WiFiManager)
 * [WiFi Manager ESP32](https://github.com/zhouhan0126/WIFIMANAGER-ESP32)
+* [ESP32 com Arduino IDE - Programação Multi-Core](https://www.fernandok.com/2018/04/esp32-com-arduino-ide-programacao-multi.html)
