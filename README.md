@@ -112,7 +112,17 @@ Como brincadeira adicional acabei conhecendo o projeto [ESP-DASH](https://github
 
 Ainda não tem nenhuma integração, mas o mesmo possui uma tarefa na qual atualizada os dados de X em X tempo. Também possui um botão no qual possui interação com o led.
 
+É um projeto muito bacana, pois foi embarcado um WebAPP desenvolvido em VueJS e o build('compilação') desse webapp é embarcado dentro do esp através do SPIFFS - uma técnica deveras interessante que pode agregar muito nos projetos!
+
+Outro fato legal que eu gostei bastante, é que toda comunicação ocorre em 'tempo real' através do uso de websockets. Então além do ESP32 atuar como webserver servindo o webapp também cria um servidor de websockets, interessante não é?!
+
+* Dashboard
+
 ![img](https://raw.githubusercontent.com/douglaszuqueto/esp32-http-firmware/master/.github/esp-dash.png)
+
+* Stats
+
+![img](https://raw.githubusercontent.com/douglaszuqueto/esp32-http-firmware/master/.github/esp-dash-stats.png)
 
 ## Monitor serial
 Um pouco do fluxo que ocorre após o salvamento das configurações no wifi manager.
