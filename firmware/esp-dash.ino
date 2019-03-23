@@ -1,5 +1,5 @@
 
-#if ESP_DASH
+#if ESP_DASH && !DEEP_SLEEP
 void initEspDash() {
   ESPDash.init(server);
 

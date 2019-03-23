@@ -27,7 +27,7 @@ void initTasks() {
     NULL
   );
 
-#if ESP_DASH
+#if ESP_DASH && !DEEP_SLEEP
   xTaskCreate(
     taskUpdateESPDash,   // Função que será executada
     "updateESPDash",     // Nome da tarefa
@@ -80,7 +80,7 @@ void taskSendData(void* p) {
   }
 }
 
-#if ESP_DASH
+#if ESP_DASH && !DEEP_SLEEP
 void taskUpdateESPDash(void* p) {
 
   TickType_t taskDelay = 2500 / portTICK_PERIOD_MS; // Valor que representa 1ms, usado nos vTaskDelays

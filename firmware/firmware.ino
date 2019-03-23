@@ -10,7 +10,7 @@
 
 #include <WiFiManager.h>
 
-#if ESP_DASH
+#if ESP_DASH && !DEEP_SLEEP
 #include <AsyncTCP.h>
 #include <ESPAsyncWebServer.h>
 #include <ESPDash.h>
@@ -63,7 +63,7 @@ WiFiClient client;
 HTTPClient http;
 Preferences preferences;
 
-#if ESP_DASH
+#if ESP_DASH && !DEEP_SLEEP
 AsyncWebServer server(80);
 #endif
 
@@ -107,7 +107,7 @@ void setup() {
   ESP.deepSleep(sleep_time);
 #endif
 
-#if ESP_DASH
+#if ESP_DASH && !DEEP_SLEEP
   initEspDash();
 #endif
 
