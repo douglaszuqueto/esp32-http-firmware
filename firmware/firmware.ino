@@ -22,6 +22,7 @@
 
 String API_AUTH = "";
 String API_SEND_DATA = "";
+String API_AUTH_PAYLOAD = "";
 
 char device_id[40];
 char device_token[70];
@@ -33,10 +34,10 @@ bool shouldSaveConfig = false;
 
 uint32_t sleep_time = 60 * 1000000; // intervalo de 1 minuto
 
-int x_axis_size = 7;
-String x_axis[7] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
-int y_axis_size = 7;
-int y_axis[7] = {2, 5, 10, 12, 18, 8, 5};
+int x_axis_size = 8;
+String x_axis[8] = {"1", "2", "3", "4", "5", "6", "7", "8"};
+int y_axis_size = 8;
+int y_axis[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 
 /**************************** DEBUG *******************************/
 
@@ -50,6 +51,7 @@ int y_axis[7] = {2, 5, 10, 12, 18, 8, 5};
 #else
 #define DEBUG_PRINTLN(m)
 #define DEBUG_PRINT(m)
+
 #define DEBUG_PRINTLNC(m)
 #define DEBUG_PRINTC(m)
 #endif
@@ -92,21 +94,11 @@ void setup() {
   setupWiFi();
 
   makeCache();
+  setupHTTP();
+
   showConfig();
 
-  //
-  API_AUTH = API_URL + "/auth";
-  API_SEND_DATA = API_URL + "/device/" + device_id;
-  //
-
   requestAccess();
-
-  ticker.detach();
-  digitalWrite(LED, LOW);
-
-#if ESP_DASH
-  initEspDash();
-#endif
 
 #if DEEP_SLEEP
   sendData();
@@ -115,8 +107,14 @@ void setup() {
   ESP.deepSleep(sleep_time);
 #endif
 
+#if ESP_DASH
+  initEspDash();
+#endif
+
   delay(1000);
   initTasks();
+  ticker.detach();
+  digitalWrite(LED, LOW);
 }
 
 void loop() {

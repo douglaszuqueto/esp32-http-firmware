@@ -11,19 +11,23 @@ void handleError(int httpCode , String message ) {
   }
 }
 
+void setupHTTP() {
+
+  API_AUTH = API_URL + "/auth";
+  API_SEND_DATA = API_URL + "/device/" + device_id;
+
+  API_AUTH_PAYLOAD += "{";
+  API_AUTH_PAYLOAD += "\"id\":\"" + String(device_id) + "\"";
+  API_AUTH_PAYLOAD += ",\"password\":\"" + String(device_token) + "\"";
+  API_AUTH_PAYLOAD += "}";
+}
+
 void requestAccess() {
-  String p;
-
-  p += "{";
-  p += "\"id\":\"" + String(device_id) + "\"";
-  p += ",\"password\":\"" + String(device_token) + "\"";
-  p += "}";
-
   http.begin(API_AUTH);
 
   http.addHeader("content-type", "application/json");
 
-  int httpCode = http.POST(p);
+  int httpCode = http.POST(API_AUTH_PAYLOAD);
 
   String response =  http.getString();
   http.end();
@@ -41,14 +45,14 @@ bool sendData() {
 
   String p;
   p += "{";
-  p += "\"snr_1\":\"" + String(1) + "\"";
-  p += ",\"snr_2\":\"" + String(2) + "\"";
-  p += ",\"snr_3\":\"" + String(3) + "\"";
-  p += ",\"snr_4\":\"" + String(4) + "\"";
-  p += ",\"snr_5\":\"" + String(5) + "\"";
-  p += ",\"snr_6\":\"" + String(6) + "\"";
-  p += ",\"snr_7\":\"" + String(7) + "\"";
-  p += ",\"snr_8\":\"" + String(8) + "\"";
+  for (int i = 0; i < 8; i++) {
+    if (i == 0)  {
+      p += "\"snr_" + String(i + 1) + "\":\"" + String(y_axis[i]) + "\"";
+      continue;
+    }
+
+    p += ",\"snr_" + String(i + 1) + "\":\"" + String(y_axis[i]) + "\"";
+  }
   p += "}";
 
   http.begin(API_SEND_DATA);

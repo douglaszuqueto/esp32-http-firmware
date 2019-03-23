@@ -1,4 +1,5 @@
 
+#if ESP_DASH
 void initEspDash() {
   ESPDash.init(server);
 
@@ -9,4 +10,5 @@ void initEspDash() {
 
   server.begin();
 }
+#endif
 
