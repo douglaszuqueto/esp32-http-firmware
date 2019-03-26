@@ -25,7 +25,7 @@ void checkLogSize() {
   int logs = preferences.getInt("logs");
 
   if (logs > 100) {
-    if (SPIFFS.remove("/eventlog.json")) {
+    if (SPIFFS.remove("/sensor_data.json")) {
       DEBUG_PRINTLNC("[Log] File deleted");
     } else {
       DEBUG_PRINTLNC("[Log] Delete failed");
@@ -38,7 +38,7 @@ String ICACHE_FLASH_ATTR sendEventLog(int page) {
   DynamicJsonDocument doc(50000);
   JsonArray array = doc.to<JsonArray>();
 
-  File eventlog = SPIFFS.open("/eventlog.json", "r");
+  File eventlog = SPIFFS.open("/sensor_data.json", "r");
 
   while (eventlog.available()) {
     String item = eventlog.readStringUntil('\n');
