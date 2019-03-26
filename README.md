@@ -1,4 +1,4 @@
-# ESP32 HTTP Firmware - V2
+# ESP32 HTTP Firmware - V3 (em desenvolvimento)
 
 Firmware para ESP32 com suporte a integração com WebService e configuração via WiFiManager
 
@@ -13,6 +13,8 @@ Se você chegou até aqui e esta boiando sobre o que originou este projeto, reco
 * [1º post](https://www.facebook.com/groups/arduino.br/permalink/2228450170527406/)
 * [2º post](https://www.facebook.com/groups/arduino.br/permalink/2231466933559063/)
 * [3º post](https://www.facebook.com/groups/arduino.br/permalink/2234227333283023/)
+* [4º post](https://www.facebook.com/groups/arduino.br/permalink/2237258569646566/)
+* [5º post](https://www.facebook.com/groups/arduino.br/permalink/2241613079211115/)
 
 ## Bibliotecas
 
