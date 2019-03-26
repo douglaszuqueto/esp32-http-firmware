@@ -1,10 +1,11 @@
-# ESP32 HTTP Firmware - V3 (em desenvolvimento)
+# ESP32 HTTP Firmware - V1.2.0 (em desenvolvimento)
 
 Firmware para ESP32 com suporte a integração com WebService e configuração via WiFiManager
 
 ## Versões
 
-* [V1](https://github.com/douglaszuqueto/esp32-http-firmware/tree/1.0.0)
+* [V1](https://github.com/douglaszuqueto/esp32-http-firmware/releases/tag/1.0.0)
+* [V1.1.0](https://github.com/douglaszuqueto/esp32-http-firmware/releases/tag/1.1.0)
 
 ## Posts relacionados
 
@@ -24,16 +25,19 @@ Se você chegou até aqui e esta boiando sobre o que originou este projeto, reco
 * [HTTPClient](https://github.com/espressif/arduino-esp32/tree/master/libraries/HTTPClient)
 * [Preferences](https://github.com/espressif/arduino-esp32/tree/master/libraries/Preferences)
 * [WiFiManager](https://github.com/tzapu/WiFiManager)
+* [SPIFFS](https://github.com/espressif/arduino-esp32/tree/master/libraries/SPIFFS)
 * [ESP-DASH](https://github.com/ayushsharma82/ESP-DASH)
+* [AsyncTCP](https://github.com/me-no-dev/AsyncTCP)
 * [ESPAsyncWebServer](https://github.com/me-no-dev/ESPAsyncWebServer)
 * [ESPAsyncTCP](https://github.com/me-no-dev/ESPAsyncTCP)
-
+* [Time](https://github.com/espressif/arduino-esp32/blob/master/tools/sdk/include/newlib/time.h)
+* [ArduinoJson](https://arduinojson.org/)
 
 ## Arquitetura/Organização
 
 Firmware dividido em arquivos. Cada arquivo com sua responsabilidade. Tudo isso visando melhor organização e facilidade em manter o código a longo prazo.
 
-![img](https://raw.githubusercontent.com/douglaszuqueto/esp32-http-firmware/master/.github/architecture-v2.png)
+![img](https://raw.githubusercontent.com/douglaszuqueto/esp32-http-firmware/master/.github/architecture-v1.2.0.png)
 
 ## Diagrama de fluxo
 
