@@ -14,7 +14,7 @@ void setupWiFi() {
   WiFi.onEvent(WiFiEvent);
 
   DEBUG_PRINTC(F("[WIFI] IP: "));
-  DEBUG_PRINTLNC(WiFi.localIP());
+  DEBUG_PRINTLN(WiFi.localIP());
 }
 
 void tick() {

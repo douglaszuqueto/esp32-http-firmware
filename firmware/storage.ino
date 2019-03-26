@@ -1,5 +1,6 @@
 
 void openStorage() {
+  DEBUG_PRINTLNC("[Storage] Setup");
   preferences.begin("esp-32", false);
 }
 

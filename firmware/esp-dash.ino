@@ -1,5 +1,11 @@
 
 #if ESP_DASH && !DEEP_SLEEP
+
+void buttonClicked(const char* id) {
+  DEBUG_PRINTLNC("Button Clicked - " + String(id));
+  digitalWrite(LED, !digitalRead(LED));
+}
+
 void initEspDash() {
   ESPDash.init(server);
 

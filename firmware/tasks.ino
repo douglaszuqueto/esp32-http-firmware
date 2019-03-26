@@ -1,57 +1,34 @@
 void initTasks() {
+  DEBUG_PRINTLNC("[Tasks] Setup");
+  
+  xTaskCreate(taskReadSensor, "readSensor", 4096, NULL, 4, NULL);
+  xTaskCreate(taskSendData, "sendData", 4096, NULL, 3, NULL);
+  xTaskCreate(taskCheckWiFi,  "checkWiFi",  4096, NULL, 1, NULL);
 
-  xTaskCreate(
-    taskReadSensor,
-    "readSensor",
-    4096,
-    NULL,
-    4,
-    NULL
-  );
-
-  xTaskCreate(
-    taskSendData,
-    "sendData",
-    4096,
-    NULL,
-    3,
-    NULL
-  );
-
-  xTaskCreate(
-    taskCheckWiFi,
-    "checkWiFi",
-    4096,
-    NULL,
-    1,
-    NULL
-  );
+  // Queue
+  //xTaskCreate(producerTask, "Producer", 10000, NULL, 4, NULL);
+  xTaskCreate(consumerTask, "Consumer", 10000, NULL, 4, NULL);
 
 #if ESP_DASH && !DEEP_SLEEP
-  xTaskCreate(
-    taskUpdateESPDash,   // Função que será executada
-    "updateESPDash",     // Nome da tarefa
-    4096,                // Tamanho da pilha
-    NULL,                // Parâmetro da tarefa
-    2,                   // Prioridade da tarefa
-    NULL                 // Número do core que será executada a tarefa
-  );
+  xTaskCreate(taskUpdateESPDash, "updateESPDash", 4096, NULL, 2, NULL);
 #endif
 }
 
 void taskCheckWiFi(void* p) {
-  TickType_t taskDelay = 5000 / portTICK_PERIOD_MS;
+  TickType_t taskDelay = 1000 / portTICK_PERIOD_MS;
 
   while (true) {
     DEBUG_PRINTC(F("[WiFi] Status:"));
     DEBUG_PRINTLN(WiFi.isConnected());
+
+    checkLogSize();
 
     vTaskDelay(taskDelay);
   }
 }
 
 void taskReadSensor(void* p) {
-  TickType_t taskDelay = 2000 / portTICK_PERIOD_MS;
+  TickType_t taskDelay = 10000 / portTICK_PERIOD_MS;
 
   while (true) {
     DEBUG_PRINTLNC(F("[Sensor] Updating the sensor data"));

@@ -7,12 +7,15 @@
 #include <Ticker.h>
 #include <HTTPClient.h>
 #include <Preferences.h>
+#include "time.h"
+#include <AsyncTCP.h>
+#include <ESPAsyncWebServer.h>
+#include <ArduinoJson.h>
+#include <SPIFFS.h>
 
 #include <WiFiManager.h>
 
 #if ESP_DASH && !DEEP_SLEEP
-#include <AsyncTCP.h>
-#include <ESPAsyncWebServer.h>
 #include <ESPDash.h>
 #endif
 
@@ -34,10 +37,22 @@ bool shouldSaveConfig = false;
 
 uint32_t sleep_time = 60 * 1000000; // intervalo de 1 minuto
 
+const char* ntpServer = "a.st1.ntp.br";
+const long  gmtOffset_sec = -3 * 3600;
+const int   daylightOffset_sec = 0;
+
 int x_axis_size = 8;
 String x_axis[8] = {"1", "2", "3", "4", "5", "6", "7", "8"};
 int y_axis_size = 8;
 int y_axis[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+
+typedef struct {
+  int ID;
+  String Data;
+  String CreatedAt;
+} Message;
+
+int queueSize = 10;
 
 /**************************** DEBUG *******************************/
 
@@ -62,6 +77,8 @@ Ticker ticker;
 WiFiClient client;
 HTTPClient http;
 Preferences preferences;
+QueueHandle_t queue;
+AsyncWebServer server(8080);
 
 #if ESP_DASH && !DEEP_SLEEP
 AsyncWebServer server(80);
@@ -76,11 +93,6 @@ void requestAccess();
 bool sendData();
 void handleError(int httpCode , String message);
 
-void buttonClicked(const char* id) {
-  DEBUG_PRINTLNC("Button Clicked - " + String(id));
-  digitalWrite(LED, !digitalRead(LED));
-}
-
 /********************************** Sketch ************************************/
 
 void setup() {
@@ -90,8 +102,26 @@ void setup() {
   initSerial();
   openStorage();
 
+  if (SPIFFS.begin()) {
+    DEBUG_PRINTLNC("[SPIFFS] open");
+  } else {
+    DEBUG_PRINTLNC("[SPIFFS] failed");
+  }
+
+  if (SPIFFS.remove("/eventlog.json")) {
+    DEBUG_PRINTLNC("[Log] File deleted");
+  } else {
+    DEBUG_PRINTLNC("[Log] Delete failed");
+  }
+
+  DEBUG_PRINTLNC("[Log] set counter to 0");
+  preferences.putInt("logs", 0);
+
   setupWifiManager();
   setupWiFi();
+  setupNtp();
+  setupQueue();
+  setupWebServer();
 
   makeCache();
   setupHTTP();
