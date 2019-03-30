@@ -1,54 +1,58 @@
 
-void ICACHE_FLASH_ATTR writeEvent(String type, String src, String desc, String data, String timestamp) {
-  StaticJsonDocument<200> root;
-  root["type"] = type;
-  root["src"] = src;
-  root["desc"] = desc;
-  root["data"] = data;
-  root["created_at"] = timestamp;
-  String result;
-  serializeJson(root, result);
+void resetLogCounter() {
+  DEBUG_PRINTLNC("[Log] set counter to 0");
+  preferences.putInt("logs", 0);
+}
 
-  File eventlog = SPIFFS.open("/eventlog.json", "a");
-  eventlog.print(result);
-
-  eventlog.print("\n");
-  eventlog.close();
-
+void incrementLogCounter() {
   int logs = preferences.getInt("logs");
   preferences.putInt("logs", (logs + 1));
-
-  DEBUG_PRINTLNC("[Log] Saved: " + desc);
 }
 
 void checkLogSize() {
   int logs = preferences.getInt("logs");
 
-  if (logs > 100) {
-    if (SPIFFS.remove("/sensor_data.json")) {
-      DEBUG_PRINTLNC("[Log] File deleted");
-    } else {
-      DEBUG_PRINTLNC("[Log] Delete failed");
-    }
-    preferences.putInt("logs", 0);
+  if (logs >= maxLogSize) {
+    resetLogCounter();
   }
 }
 
-String ICACHE_FLASH_ATTR sendEventLog(int page) {
-  DynamicJsonDocument doc(50000);
+void writeLog(String type, String src, String desc, String data, String timestamp) {
+  String result;
+  StaticJsonDocument<500> root;
+
+  root["type"] = type;
+  root["src"] = src;
+  root["desc"] = desc;
+  root["data"] = data;
+  root["created_at"] = timestamp;
+  serializeJson(root, result);
+
+  checkLogSize();
+
+  int logs = preferences.getInt("logs");
+  String idx = "log_" + String(logs);
+  preferences.putString(idx.c_str(), result);
+
+  incrementLogCounter();
+  DEBUG_PRINTLNC("[Log] Saved: " + desc);
+}
+
+String ICACHE_FLASH_ATTR getLogs() {
+  String result;
+  const size_t capacity = JSON_ARRAY_SIZE((maxLogSize + 10)) + 2048;
+
+  DynamicJsonDocument doc(capacity);
   JsonArray array = doc.to<JsonArray>();
 
-  File eventlog = SPIFFS.open("/sensor_data.json", "r");
-
-  while (eventlog.available()) {
-    String item = eventlog.readStringUntil('\n');
+  for (int i = 0; i < 20; i++ ) {
+    String idx = "log_" + String(i);
+    String item = preferences.getString(idx.c_str());
 
     array.add(item);
   }
-  eventlog.close();
 
-  String result;
-  serializeJson(doc, result);
+  serializeJsonPretty(doc, result);
 
   return result;
 }
