@@ -1,34 +1,46 @@
 void initTasks() {
   DEBUG_PRINTLNC("[Tasks] Setup");
-  
+
+  xTaskCreate(taskWebServer,  "taskWebServer",  10000, NULL, 5, NULL);
+  delay(1000);
   xTaskCreate(taskReadSensor, "readSensor", 4096, NULL, 4, NULL);
   xTaskCreate(taskSendData, "sendData", 4096, NULL, 3, NULL);
   xTaskCreate(taskCheckWiFi,  "checkWiFi",  4096, NULL, 1, NULL);
 
   // Queue
   //xTaskCreate(producerTask, "Producer", 10000, NULL, 4, NULL);
-  xTaskCreate(consumerTask, "Consumer", 10000, NULL, 4, NULL);
+  xTaskCreate(consumerTask, "consumer", 4096, NULL, 4, NULL);
 
 #if ESP_DASH && !DEEP_SLEEP
   xTaskCreate(taskUpdateESPDash, "updateESPDash", 4096, NULL, 2, NULL);
 #endif
 }
 
-void taskCheckWiFi(void* p) {
+void taskWebServer(void* p) {
   TickType_t taskDelay = 1000 / portTICK_PERIOD_MS;
+
+  while (true) {
+    if (!isStartedWebServer) {
+      setupWebServer();
+      isStartedWebServer = true;
+    }
+    vTaskDelay(taskDelay);
+  }
+}
+
+void taskCheckWiFi(void* p) {
+  TickType_t taskDelay = 5000 / portTICK_PERIOD_MS;
 
   while (true) {
     DEBUG_PRINTC(F("[WiFi] Status:"));
     DEBUG_PRINTLN(WiFi.isConnected());
-
-    checkLogSize();
 
     vTaskDelay(taskDelay);
   }
 }
 
 void taskReadSensor(void* p) {
-  TickType_t taskDelay = 10000 / portTICK_PERIOD_MS;
+  TickType_t taskDelay = 5000 / portTICK_PERIOD_MS;
 
   while (true) {
     DEBUG_PRINTLNC(F("[Sensor] Updating the sensor data"));

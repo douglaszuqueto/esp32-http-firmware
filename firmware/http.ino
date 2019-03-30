@@ -12,7 +12,6 @@ void handleError(int httpCode , String message ) {
 }
 
 void setupHTTP() {
-
   API_AUTH = API_URL + "/auth";
   API_SEND_DATA = API_URL + "/device/" + device_id;
 

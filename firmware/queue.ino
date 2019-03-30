@@ -35,7 +35,7 @@ void consumerTask( void * parameter) {
     DEBUG_PRINT(" | ts ");
     DEBUG_PRINTLN(message.CreatedAt);
 
-    writeEvent("INFO", "sensor", "read_data", message.Data, message.CreatedAt);
+    writeLog("INFO", "sensor", "read_data", message.Data, message.CreatedAt);
   }
 }
 

@@ -9,7 +9,10 @@ void readSensor() {
   for (int i = 0; i < 8; i++) {
     y_axis[i] = random(10, 99);
 
+    //writeLog("INFO", "sensor", "read_data", String(y_axis[i]), getTimestamp());
+
     sendDataSensorToQueue(i, String(y_axis[i]));
+    delay(25);
   }
 }
 

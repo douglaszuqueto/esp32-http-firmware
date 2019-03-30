@@ -1,5 +1,5 @@
 
-void openStorage() {
+void setupStorage() {
   DEBUG_PRINTLNC("[Storage] Setup");
   preferences.begin("esp-32", false);
 }
@@ -8,7 +8,20 @@ void closeStorage() {
   preferences.end();
 }
 
-/************************* GET **********************/
+/************************* SET **********************/
+void incrementBootCounter() {
+  int boot = getBootCounter();
+  DEBUG_PRINTC("[ESP] Boot: ");
+  DEBUG_PRINTLN(boot);
+
+  preferences.putInt("boot", (boot + 1));
+}
+
+void resetBootCounter() {
+  DEBUG_PRINTC("[ESP] Boot reset");
+
+  preferences.putInt("boot", 0);
+}
 
 void setDeviceToken(String str) {
   preferences.putString("device_token", str);
@@ -31,7 +44,10 @@ void setJWTToken(String str) {
   DEBUG_PRINTLN(token);
 }
 
-/************************* SET **********************/
+/************************* GET **********************/
+int getBootCounter() {
+  return preferences.getInt("boot");
+}
 
 String getDeviceID() {
   String str = preferences.getString("device_id");

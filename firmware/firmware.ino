@@ -53,6 +53,8 @@ typedef struct {
 } Message;
 
 int queueSize = 10;
+int maxLogSize = 20;
+bool isStartedWebServer = false;
 
 /**************************** DEBUG *******************************/
 
@@ -60,8 +62,8 @@ int queueSize = 10;
 #define DEBUG_PRINTLN(m) Serial.println(m)
 #define DEBUG_PRINT(m) Serial.print(m)
 
-#define DEBUG_PRINTLNC(m) Serial.println("[Core " + String(xPortGetCoreID()) + "]" + m)
-#define DEBUG_PRINTC(m) Serial.print("[Core " + String(xPortGetCoreID()) + "]" + m)
+#define DEBUG_PRINTLNC(m) Serial.println("Core " + String(xPortGetCoreID()) + " - " + m)
+#define DEBUG_PRINTC(m) Serial.print("Core " + String(xPortGetCoreID()) + " - " + m)
 
 #else
 #define DEBUG_PRINTLN(m)
@@ -100,35 +102,16 @@ void setup() {
   ticker.attach(0.3, tick);
 
   initSerial();
-  openStorage();
-
-  if (SPIFFS.begin()) {
-    DEBUG_PRINTLNC("[SPIFFS] open");
-  } else {
-    DEBUG_PRINTLNC("[SPIFFS] failed");
-  }
-
-  if (SPIFFS.remove("/eventlog.json")) {
-    DEBUG_PRINTLNC("[Log] File deleted");
-  } else {
-    DEBUG_PRINTLNC("[Log] Delete failed");
-  }
-
-  DEBUG_PRINTLNC("[Log] set counter to 0");
-  preferences.putInt("logs", 0);
-
+  setupStorage();
   setupWifiManager();
   setupWiFi();
   setupNtp();
   setupQueue();
-  setupWebServer();
 
   makeCache();
   setupHTTP();
 
   showConfig();
-
-  requestAccess();
 
 #if DEEP_SLEEP
   sendData();
@@ -143,6 +126,7 @@ void setup() {
 
   delay(1000);
   initTasks();
+  incrementBootCounter();
   ticker.detach();
   digitalWrite(LED, LOW);
 }
